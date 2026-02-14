@@ -1,9 +1,9 @@
-a<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulator Profit Shopee · Rincian Lengkap</title>
+    <title>Kalkulator Profit Shopee </title>
     <style>
         * {
             box-sizing: border-box;
@@ -34,6 +34,7 @@ a<!DOCTYPE html>
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
         h1 small {
             font-size: 0.9rem;
@@ -255,13 +256,93 @@ a<!DOCTYPE html>
         button:hover {
             background: #ea580c;
         }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media screen and (max-width: 900px) {
+            .grid-panel {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .calculator {
+                padding: 24px 16px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            h1 small {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            body {
+                padding: 8px;
+            }
+            .calculator {
+                padding: 20px 12px;
+                border-radius: 20px;
+            }
+            h1 {
+                font-size: 1.4rem;
+            }
+            .sub {
+                font-size: 0.9rem;
+                padding-left: 12px;
+            }
+            .section-title {
+                font-size: 1.1rem;
+            }
+            .biaya-detail {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
+            .biaya-tetap-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            .row {
+                gap: 10px;
+            }
+            .col {
+                flex: 1 1 100%;
+                min-width: 100%;
+            }
+            .input-wrapper input {
+                font-size: 0.95rem;
+                padding: 10px 0;
+            }
+            .card .value {
+                font-size: 1.3rem;
+            }
+            .table-row {
+                font-size: 0.85rem;
+                padding: 6px 4px;
+            }
+            .detail-table {
+                padding: 12px;
+            }
+            button {
+                width: 100%;
+                padding: 12px;
+            }
+        }
+
+        @media screen and (max-width: 380px) {
+            .summary-cards {
+                flex-direction: column;
+            }
+            .card {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="calculator">
     <h1>
-        🧮 Kalkulator Profit DEORA
-        <small>DEVELOP BY DEORA</small>
+        🧮 Kalkulator Profit Shopee
+        <small>BY DEORA</small>
     </h1>
     <div class="sub">
         ⚡ Semua biaya persentase dihitung dari <strong>Harga Jual Produk</strong> (setelah diskon, sebelum voucher). 
@@ -346,7 +427,7 @@ a<!DOCTYPE html>
                 <div class="input-group">
                     <label>LIVE XTRA (%)</label>
                     <div class="input-wrapper">
-                        <input type="number" id="liveXtra" value="3" step="0.1" min="0">
+                        <input type="number" id="liveXtra" value="" step="0.1" min="0">
                         <span class="persen-badge">%</span>
                     </div>
                 </div>
