@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Profit Shopee · Rincian Lengkap</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: #f5f7fb;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .calculator {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            padding: 32px 28px;
+        }
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 600;
+            margin: 0 0 8px 0;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        h1 small {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #64748b;
+            margin-left: auto;
+        }
+        .sub {
+            color: #475569;
+            margin-top: -5px;
+            margin-bottom: 28px;
+            border-left: 4px solid #f97316;
+            padding-left: 16px;
+            background: #fff7ed;
+            border-radius: 0 12px 12px 0;
+            line-height: 1.5;
+        }
+        .grid-panel {
+            display: grid;
+            grid-template-columns: 1.2fr 0.9fr;
+            gap: 28px;
+        }
+        /* input section */
+        .input-section {
+            background: #f8fafc;
+            border-radius: 24px;
+            padding: 24px 20px;
+            border: 1px solid #e9eef2;
+        }
+        .section-title {
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin: 0 0 16px 0;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-title i {
+            color: #f97316;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .col {
+            flex: 1 1 160px;
+            min-width: 140px;
+        }
+        .input-group {
+            margin-bottom: 14px;
+        }
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: #475569;
+            margin-bottom: 4px;
+        }
+        .input-wrapper {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1px solid #d1d9e6;
+            border-radius: 16px;
+            padding: 0 12px;
+            transition: 0.2s;
+        }
+        .input-wrapper:focus-within {
+            border-color: #f97316;
+            box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+        }
+        .input-wrapper span {
+            color: #334155;
+            font-weight: 500;
+            margin-right: 6px;
+        }
+        .input-wrapper input {
+            width: 100%;
+            border: none;
+            padding: 12px 0;
+            font-size: 1rem;
+            background: transparent;
+            outline: none;
+        }
+        .input-wrapper input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .input-wrapper input[type="number"]::-webkit-outer-spin-button,
+        .input-wrapper input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .persen-badge {
+            background: #e2e8f0;
+            border-radius: 30px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #334155;
+            margin-left: 6px;
+        }
+        .biaya-tetap-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        /* result section */
+        .result-section {
+            background: linear-gradient(145deg, #ffffff 0%, #fcfdff 100%);
+            border-radius: 24px;
+            padding: 24px 20px;
+            border: 1px solid #e9eef2;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+        }
+        .summary-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 16px 14px;
+            flex: 1 1 130px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            border: 1px solid #edf2f7;
+        }
+        .card .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.4px;
+        }
+        .card .value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-top: 4px;
+            word-break: break-word;
+        }
+        .profit.pos { color: #10b981; }
+        .profit.neg { color: #ef4444; }
+        .detail-table {
+            margin-top: 24px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 16px;
+        }
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 6px;
+            border-bottom: 1px dashed #cfddee;
+            font-size: 0.95rem;
+        }
+        .table-row.header {
+            font-weight: 700;
+            color: #1e293b;
+            border-bottom: 2px solid #94a3b8;
+            padding-bottom: 10px;
+        }
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        .table-row.total-row {
+            font-weight: 700;
+            background: #feeac1;
+            border-radius: 14px;
+            padding: 12px 10px;
+            margin-top: 8px;
+            border: none;
+        }
+        .table-row.rugi {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+        .table-row.untung {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .biaya-detail {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 20px;
+        }
+        .keterangan {
+            font-size: 0.9rem;
+            color: #334155;
+        }
+        .footnote {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-align: right;
+        }
+        hr {
+            border: none;
+            border-top: 2px solid #e2e8f0;
+            margin: 18px 0;
+        }
+        button {
+            background: #f97316;
+            border: none;
+            color: white;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background: #ea580c;
+        }
+    </style>
+</head>
+<body>
+<div class="calculator">
+    <h1>
+        🧮 Kalkulator Profit Shopee
+        <small>by rincian biaya lengkap</small>
+    </h1>
+    <div class="sub">
+        ⚡ Semua biaya persentase dihitung dari <strong>Harga Jual Produk</strong> (setelah diskon, sebelum voucher). 
+        Biaya tetap & hemat kirim sebagai pengurang.
+    </div>
+
+    <div class="grid-panel">
+        <!-- INPUT AREA -->
+        <div class="input-section">
+            <div class="section-title">
+                <i>📦</i> Parameter utama
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="input-group">
+                        <label>HARGA JUAL AWAL (Rp)</label>
+                        <div class="input-wrapper">
+                            <span>Rp</span>
+                            <input type="number" id="hargaJualAwal" value="57500" step="100" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="input-group">
+                        <label>HARGA POKOK (Rp)</label>
+                        <div class="input-wrapper">
+                            <span>Rp</span>
+                            <input type="number" id="hargaPokok" value="50000" step="500" min="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin: 18px 0 10px;">
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <div style="flex:1; min-width:150px;">
+                        <div class="input-group">
+                            <label>DISKON PRODUK (%)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="diskonProduk" value="4" step="0.1" min="0" max="100">
+                                <span class="persen-badge">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="flex:1; min-width:150px;">
+                        <div class="input-group">
+                            <label>VOUCHER TOKO (%)</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="voucherToko" value="2" step="0.1" min="0" max="100">
+                                <span class="persen-badge">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title" style="margin-top: 16px;">
+                <i>⚙️</i> Biaya persentase (dari Harga Jual Produk)
+            </div>
+            <div class="biaya-detail">
+                <div class="input-group">
+                    <label>ADMINISTRASI (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="adm" value="8.25" step="0.05" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>GRATIS ONGKIR XTRA (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="gratisOngkir" value="5.5" step="0.1" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>PROMO XTRA (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="promoXtra" value="4.5" step="0.1" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>LIVE XTRA (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="liveXtra" value="3" step="0.1" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>PREMI (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="premi" value="0.5" step="0.05" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>PRE-ORDER (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="po" value="3" step="0.1" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>SPAYLATER 6 BLN (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="spaylater" value="4" step="0.1" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>KOMISI AMS (%)</label>
+                    <div class="input-wrapper">
+                        <input type="number" id="ams" value="5" step="0.1" min="0">
+                        <span class="persen-badge">%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title" style="margin-top: 16px;">
+                <i>💰</i> Biaya tetap & penyesuaian
+            </div>
+            <div class="biaya-tetap-row">
+                <div class="input-group">
+                    <label>BIAYA PROSES PESANAN (Rp)</label>
+                    <div class="input-wrapper">
+                        <span>Rp</span>
+                        <input type="number" id="biayaProses" value="1250" step="50" min="0">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>HEMAT BIAYA KIRIM (Rp)</label>
+                    <div class="input-wrapper">
+                        <span>Rp</span>
+                        <input type="number" id="hematKirim" value="350" step="10" min="0">
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 20px; text-align: right;">
+                <button id="resetDefault">↻ Reset ke contoh</button>
+            </div>
+        </div>
+
+        <!-- OUTPUT & HASIL -->
+        <div class="result-section">
+            <div class="section-title">
+                <i>📊</i> Ringkasan penghasilan
+            </div>
+            <div class="summary-cards">
+                <div class="card">
+                    <div class="label">Harga Jual Akhir</div>
+                    <div class="value" id="displayHJA">Rp0</div>
+                </div>
+                <div class="card">
+                    <div class="label">Total Biaya %</div>
+                    <div class="value" id="displayTotalBiayaPersen">Rp0</div>
+                </div>
+                <div class="card">
+                    <div class="label">Total Penghasilan</div>
+                    <div class="value" id="displayPenghasilan">Rp0</div>
+                </div>
+            </div>
+
+            <div class="detail-table">
+                <div class="table-row header">
+                    <span>Rincian perhitungan</span>
+                    <span>Nominal (Rp)</span>
+                </div>
+                <div class="table-row">
+                    <span>Harga Jual Awal</span>
+                    <span id="r_hja">0</span>
+                </div>
+                <div class="table-row">
+                    <span>Diskon Produk (<span id="r_diskonPersen">4</span>%)</span>
+                    <span id="r_diskon">0</span>
+                </div>
+                <div class="table-row" style="font-weight:600;">
+                    <span>Harga Jual Produk</span>
+                    <span id="r_hjp">0</span>
+                </div>
+                <div class="table-row">
+                    <span>Voucher Toko (<span id="r_voucherPersen">2</span>%)</span>
+                    <span id="r_voucher">0</span>
+                </div>
+                <div class="table-row" style="font-weight:600; background:#e6f0ff; border-radius:8px;">
+                    <span>Harga Jual Akhir</span>
+                    <span id="r_hja_akhir">0</span>
+                </div>
+                <div style="margin:10px 0 5px; font-size:0.85rem; color:#f97316;">✂️ Potongan biaya (dari Harga Jual Produk)</div>
+                <div id="rinciBiayaPersenContainer">
+                    <!-- akan diisi JS -->
+                </div>
+                <div class="table-row">
+                    <span>Biaya Proses Pesanan</span>
+                    <span id="r_proses">0</span>
+                </div>
+                <div class="table-row">
+                    <span>Hemat Biaya Kirim</span>
+                    <span id="r_hemat">0</span>
+                </div>
+                <div class="table-row total-row">
+                    <span>Total Penghasilan</span>
+                    <span id="r_totalPenghasilan">0</span>
+                </div>
+                <div class="table-row">
+                    <span>Harga Pokok</span>
+                    <span id="r_hp">0</span>
+                </div>
+                <div class="table-row" id="profitRow">
+                    <span>Profit Bersih</span>
+                    <span id="r_profit">0</span>
+                </div>
+            </div>
+            <div class="footnote">
+                * semua biaya persen dihitung dari <strong>Harga Jual Produk</strong>.<br>
+                Hasil langsung diperbarui saat mengubah input.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ambil elemen input
+        const inputs = {
+            hargaJualAwal: document.getElementById('hargaJualAwal'),
+            hargaPokok: document.getElementById('hargaPokok'),
+            diskonProduk: document.getElementById('diskonProduk'),
+            voucherToko: document.getElementById('voucherToko'),
+            adm: document.getElementById('adm'),
+            gratisOngkir: document.getElementById('gratisOngkir'),
+            promoXtra: document.getElementById('promoXtra'),
+            liveXtra: document.getElementById('liveXtra'),
+            premi: document.getElementById('premi'),
+            po: document.getElementById('po'),
+            spaylater: document.getElementById('spaylater'),
+            ams: document.getElementById('ams'),
+            biayaProses: document.getElementById('biayaProses'),
+            hematKirim: document.getElementById('hematKirim')
+        };
+
+        // elemen tampilan
+        const display = {
+            hja: document.getElementById('displayHJA'),
+            totalBiayaPersen: document.getElementById('displayTotalBiayaPersen'),
+            penghasilan: document.getElementById('displayPenghasilan'),
+            // untuk tabel
+            r_hja: document.getElementById('r_hja'),
+            r_diskonPersen: document.getElementById('r_diskonPersen'),
+            r_diskon: document.getElementById('r_diskon'),
+            r_hjp: document.getElementById('r_hjp'),
+            r_voucherPersen: document.getElementById('r_voucherPersen'),
+            r_voucher: document.getElementById('r_voucher'),
+            r_hja_akhir: document.getElementById('r_hja_akhir'),
+            r_proses: document.getElementById('r_proses'),
+            r_hemat: document.getElementById('r_hemat'),
+            r_totalPenghasilan: document.getElementById('r_totalPenghasilan'),
+            r_hp: document.getElementById('r_hp'),
+            r_profit: document.getElementById('r_profit'),
+            profitRow: document.getElementById('profitRow'),
+            rinciContainer: document.getElementById('rinciBiayaPersenContainer')
+        };
+
+        // daftar biaya persen untuk looping (label, id, properti)
+        const biayaPersenList = [
+            { label: 'Biaya Administrasi', id: 'adm', persenId: 'adm' },
+            { label: 'Gratis Ongkir XTRA', id: 'gratisOngkir', persenId: 'gratisOngkir' },
+            { label: 'Promo XTRA', id: 'promoXtra', persenId: 'promoXtra' },
+            { label: 'Live XTRA', id: 'liveXtra', persenId: 'liveXtra' },
+            { label: 'Premi', id: 'premi', persenId: 'premi' },
+            { label: 'Pre-Order', id: 'po', persenId: 'po' },
+            { label: 'SPayLater 6 Bln', id: 'spaylater', persenId: 'spaylater' },
+            { label: 'Komisi AMS', id: 'ams', persenId: 'ams' }
+        ];
+
+        // helper format rupiah
+        function formatRupiah(angka) {
+            return 'Rp' + Math.round(angka).toLocaleString('id-ID');
+        }
+
+        function hitung() {
+            // ambil nilai numerik
+            const hargaAwal = parseFloat(inputs.hargaJualAwal.value) || 0;
+            const diskonPersen = parseFloat(inputs.diskonProduk.value) || 0;
+            const voucherPersen = parseFloat(inputs.voucherToko.value) || 0;
+            const admPersen = parseFloat(inputs.adm.value) || 0;
+            const gratisPersen = parseFloat(inputs.gratisOngkir.value) || 0;
+            const promoPersen = parseFloat(inputs.promoXtra.value) || 0;
+            const livePersen = parseFloat(inputs.liveXtra.value) || 0;
+            const premiPersen = parseFloat(inputs.premi.value) || 0;
+            const poPersen = parseFloat(inputs.po.value) || 0;
+            const spayPersen = parseFloat(inputs.spaylater.value) || 0;
+            const amsPersen = parseFloat(inputs.ams.value) || 0;
+            const biayaProses = parseFloat(inputs.biayaProses.value) || 0;
+            const hematKirim = parseFloat(inputs.hematKirim.value) || 0;
+            const hargaPokok = parseFloat(inputs.hargaPokok.value) || 0;
+
+            // hitung bertahap
+            const diskonProdukNominal = hargaAwal * (diskonPersen / 100);
+            const hargaJualProduk = hargaAwal - diskonProdukNominal;
+
+            const voucherNominal = hargaJualProduk * (voucherPersen / 100);
+            const hargaJualAkhir = hargaJualProduk - voucherNominal;
+
+            // kumpulkan biaya persen
+            const biayaPersenNominal = {
+                adm: hargaJualProduk * (admPersen / 100),
+                gratis: hargaJualProduk * (gratisPersen / 100),
+                promo: hargaJualProduk * (promoPersen / 100),
+                live: hargaJualProduk * (livePersen / 100),
+                premi: hargaJualProduk * (premiPersen / 100),
+                po: hargaJualProduk * (poPersen / 100),
+                spay: hargaJualProduk * (spayPersen / 100),
+                ams: hargaJualProduk * (amsPersen / 100)
+            };
+
+            const totalBiayaPersen = 
+                biayaPersenNominal.adm + biayaPersenNominal.gratis + biayaPersenNominal.promo +
+                biayaPersenNominal.live + biayaPersenNominal.premi + biayaPersenNominal.po +
+                biayaPersenNominal.spay + biayaPersenNominal.ams;
+
+            const totalPenghasilan = hargaJualAkhir - totalBiayaPersen - biayaProses - hematKirim;
+            const profit = totalPenghasilan - hargaPokok;
+
+            // update ringkasan card
+            display.hja.innerText = formatRupiah(hargaJualAkhir);
+            display.totalBiayaPersen.innerText = formatRupiah(totalBiayaPersen);
+            display.penghasilan.innerText = formatRupiah(totalPenghasilan);
+
+            // update tabel dasar
+            display.r_hja.innerText = formatRupiah(hargaAwal);
+            display.r_diskonPersen.innerText = diskonPersen.toFixed(1);
+            display.r_diskon.innerText = formatRupiah(diskonProdukNominal);
+            display.r_hjp.innerText = formatRupiah(hargaJualProduk);
+            display.r_voucherPersen.innerText = voucherPersen.toFixed(1);
+            display.r_voucher.innerText = formatRupiah(voucherNominal);
+            display.r_hja_akhir.innerText = formatRupiah(hargaJualAkhir);
+            display.r_proses.innerText = formatRupiah(biayaProses);
+            display.r_hemat.innerText = formatRupiah(hematKirim);
+            display.r_totalPenghasilan.innerText = formatRupiah(totalPenghasilan);
+            display.r_hp.innerText = formatRupiah(hargaPokok);
+            display.r_profit.innerText = formatRupiah(profit);
+
+            // warna profit
+            if (profit >= 0) {
+                display.profitRow.className = 'table-row untung';
+                display.r_profit.className = 'profit pos';
+            } else {
+                display.profitRow.className = 'table-row rugi';
+                display.r_profit.className = 'profit neg';
+            }
+
+            // generate rincian biaya persen dinamis
+            let htmlStr = '';
+            const biayaArr = [
+                { label: 'Biaya Administrasi', nominal: biayaPersenNominal.adm, persen: admPersen },
+                { label: 'Gratis Ongkir XTRA', nominal: biayaPersenNominal.gratis, persen: gratisPersen },
+                { label: 'Promo XTRA', nominal: biayaPersenNominal.promo, persen: promoPersen },
+                { label: 'Live XTRA', nominal: biayaPersenNominal.live, persen: livePersen },
+                { label: 'Premi', nominal: biayaPersenNominal.premi, persen: premiPersen },
+                { label: 'Pre-Order', nominal: biayaPersenNominal.po, persen: poPersen },
+                { label: 'SPayLater 6 Bln', nominal: biayaPersenNominal.spay, persen: spayPersen },
+                { label: 'Komisi AMS', nominal: biayaPersenNominal.ams, persen: amsPersen }
+            ];
+            biayaArr.forEach(b => {
+                htmlStr += `<div class="table-row"><span>${b.label} (${b.persen.toFixed(2)}%)</span><span>${formatRupiah(b.nominal)}</span></div>`;
+            });
+            display.rinciContainer.innerHTML = htmlStr;
+        }
+
+        // event listener ke semua input
+        Object.values(inputs).forEach(inp => inp.addEventListener('input', hitung));
+
+        // reset ke nilai default contoh (dari file)
+        document.getElementById('resetDefault').addEventListener('click', function() {
+            inputs.hargaJualAwal.value = 57500;
+            inputs.hargaPokok.value = 50000;
+            inputs.diskonProduk.value = 4;
+            inputs.voucherToko.value = 2;
+            inputs.adm.value = 8.25;
+            inputs.gratisOngkir.value = 5.5;
+            inputs.promoXtra.value = 4.5;
+            inputs.liveXtra.value = 3;
+            inputs.premi.value = 0.5;
+            inputs.po.value = 3;
+            inputs.spaylater.value = 4;
+            inputs.ams.value = 5;
+            inputs.biayaProses.value = 1250;
+            inputs.hematKirim.value = 350;
+            hitung();
+        });
+
+        // panggil pertama kali
+        hitung();
+    })();
+</script>
+</body>
+</html>
